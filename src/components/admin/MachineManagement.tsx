@@ -10,7 +10,8 @@ import {
   Edit,
   Power,
   Package,
-  AlertCircle
+  AlertCircle,
+  Copy
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -63,8 +64,6 @@ export const MachineManagement = () => {
         location: {
           address: newMachine.address,
           city: newMachine.city,
-          state: '',
-          zipCode: '',
           coordinates: { lat: 0, lng: 0 } // Would be geocoded in real app
         },
         status: newMachine.status,
@@ -80,7 +79,7 @@ export const MachineManagement = () => {
           city: '',
           status: 'offline'
         });
-        toast.success('Machine added successfully');
+        toast.success(`Machine added successfully! ID: ${response.data.id}`);
       }
     } catch (error) {
       console.error('Error adding machine:', error);
@@ -141,6 +140,11 @@ export const MachineManagement = () => {
       console.error('Error deleting machine:', error);
       toast.error('Failed to delete machine');
     }
+  };
+
+  const copyMachineId = (machineId: string) => {
+    navigator.clipboard.writeText(machineId);
+    toast.success('Machine ID copied to clipboard');
   };
 
   const getStatusColor = (status: VendingMachine['status']) => {
@@ -243,7 +247,17 @@ export const MachineManagement = () => {
                   <Monitor size={24} />
                   <div>
                     <CardTitle className="text-lg">{machine.name}</CardTitle>
-                    <p className="text-sm text-white/80">{machine.id}</p>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <p className="text-sm text-white/80 font-mono">{machine.id}</p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyMachineId(machine.id)}
+                        className="h-6 w-6 p-0 text-white/60 hover:text-white hover:bg-white/10"
+                      >
+                        <Copy size={12} />
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 <Badge className={`${getStatusColor(machine.status)} text-white flex items-center space-x-1`}>

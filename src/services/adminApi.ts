@@ -2,16 +2,21 @@ import { VendingMachine, SalesData, InventoryAlert, DashboardStats, RevenueData,
 import { VendingItem, ApiResponse } from '../types';
 import { vendingItems } from '../data/mockData';
 
+// Generate unique machine ID
+const generateMachineId = (): string => {
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).substr(2, 5);
+  return `VM-${timestamp}-${random}`.toUpperCase();
+};
+
 // Mock data for admin dashboard
 const mockMachines: VendingMachine[] = [
   {
-    id: 'VM001',
+    id: 'VM-LX9K2M-A7B3F',
     name: 'Main Campus - Building A',
     location: {
       address: '123 University Ave',
       city: 'College Town',
-      state: 'CA',
-      zipCode: '90210',
       coordinates: { lat: 34.0522, lng: -118.2437 }
     },
     status: 'online',
@@ -25,13 +30,11 @@ const mockMachines: VendingMachine[] = [
     ]
   },
   {
-    id: 'VM002',
+    id: 'VM-LX9K2N-B8C4G',
     name: 'Student Center',
     location: {
       address: '456 Campus Drive',
       city: 'College Town',
-      state: 'CA',
-      zipCode: '90210',
       coordinates: { lat: 34.0522, lng: -118.2437 }
     },
     status: 'online',
@@ -44,13 +47,11 @@ const mockMachines: VendingMachine[] = [
     ]
   },
   {
-    id: 'VM003',
+    id: 'VM-LX9K2O-C9D5H',
     name: 'Library Entrance',
     location: {
       address: '789 Knowledge Blvd',
       city: 'College Town',
-      state: 'CA',
-      zipCode: '90210',
       coordinates: { lat: 34.0522, lng: -118.2437 }
     },
     status: 'offline',
@@ -64,7 +65,7 @@ const mockMachines: VendingMachine[] = [
 const mockSalesData: SalesData[] = [
   {
     id: 'S001',
-    machineId: 'VM001',
+    machineId: 'VM-LX9K2M-A7B3F',
     itemId: '1',
     itemName: 'Coca-Cola Classic',
     quantity: 2,
@@ -75,7 +76,7 @@ const mockSalesData: SalesData[] = [
   },
   {
     id: 'S002',
-    machineId: 'VM002',
+    machineId: 'VM-LX9K2N-B8C4G',
     itemId: '4',
     itemName: 'Lay\'s Classic Chips',
     quantity: 1,
@@ -89,7 +90,7 @@ const mockSalesData: SalesData[] = [
 const mockInventoryAlerts: InventoryAlert[] = [
   {
     id: 'A001',
-    machineId: 'VM001',
+    machineId: 'VM-LX9K2M-A7B3F',
     machineName: 'Main Campus - Building A',
     itemId: '3',
     itemName: 'Sprite',
@@ -100,7 +101,7 @@ const mockInventoryAlerts: InventoryAlert[] = [
   },
   {
     id: 'A002',
-    machineId: 'VM002',
+    machineId: 'VM-LX9K2N-B8C4G',
     machineName: 'Student Center',
     itemId: '10',
     itemName: 'Red Bull',
@@ -168,7 +169,7 @@ class AdminAPI {
     
     const newMachine: VendingMachine = {
       ...machine,
-      id: `VM${String(this.machines.length + 1).padStart(3, '0')}`,
+      id: generateMachineId(),
       totalRevenue: 0,
       totalSales: 0,
       inventory: []

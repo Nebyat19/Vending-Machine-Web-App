@@ -4,8 +4,6 @@ export interface VendingMachine {
   location: {
     address: string;
     city: string;
-    state: string;
-    zipCode: string;
     coordinates: {
       lat: number;
       lng: number;
